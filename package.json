@@ -1,0 +1,32 @@
+{
+  "name": "nft-descriptor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noawhite/nft-descriptor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noawhite/nft-descriptor/issues"
+  },
+  "homepage": "https://github.com/noawhite/nft-descriptor#readme",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "base64-sol": "^1.0.1",
+    "chai": "^4.3.4",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.4.1",
+    "hardhat": "^2.5.0",
+    "hardhat-gas-reporter": "^1.0.4",
+    "hardhat-typechain": "^0.3.5",
+    "openzeppelin-solidity": "^4.2.0",
+    "ts-node": "^10.1.0"
+  }
+}
