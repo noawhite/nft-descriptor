@@ -1,8 +1,7 @@
-// SPDX-License-Identifier: GPL-2.0-or-later
-pragma solidity >=0.7.6;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity 0.8.3;
 
 import "openzeppelin-solidity/contracts/utils/Strings.sol";
-// import "openzeppelin-solidity/contracts/utils/Strings.sol";
 import 'base64-sol/base64.sol';
 
 library NFTSVG {

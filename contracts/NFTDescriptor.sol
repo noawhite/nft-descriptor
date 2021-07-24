@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.0;
-pragma abicoder v2;
+pragma solidity 0.8.3;
+// pragma abicoder v2;
 
 import "openzeppelin-solidity/contracts/utils/Strings.sol";
 
@@ -23,7 +23,9 @@ library NFTDescriptor {
         string memory name = generateName(params);
         string memory description =
             generateDescription(escapeQuotes(params.name));
+        // FIXME
         string memory image = Base64.encode(bytes(generateSVGImage(params)));
+        // string memory image = "test.png";
 
         return
             string(
@@ -96,72 +98,6 @@ library NFTDescriptor {
             );
     }
 
-    struct DecimalStringParams {
-        // significant figures of decimal
-        uint256 sigfigs;
-        // length of decimal string
-        uint8 bufferLength;
-        // ending index for significant figures (funtion works backwards when copying sigfigs)
-        uint8 sigfigIndex;
-        // index of decimal place (0 if no decimal)
-        uint8 decimalIndex;
-        // start index for trailing/leading 0's for very small/large numbers
-        uint8 zerosStartIndex;
-        // end index for trailing/leading 0's for very small/large numbers
-        uint8 zerosEndIndex;
-        // true if decimal number is less than one
-        bool isLessThanOne;
-        // true if string should include "%"
-        bool isPercent;
-    }
-
-    function generateDecimalString(DecimalStringParams memory params) private pure returns (string memory) {
-        bytes memory buffer = new bytes(params.bufferLength);
-        if (params.isPercent) {
-            buffer[buffer.length - 1] = '%';
-        }
-        if (params.isLessThanOne) {
-            buffer[0] = '0';
-            buffer[1] = '.';
-        }
-
-        // add leading/trailing 0's
-        for (uint256 zerosCursor = params.zerosStartIndex; zerosCursor < params.zerosEndIndex + 1; zerosCursor++) {
-            buffer[zerosCursor] = bytes1(uint8(48));
-        }
-        // add sigfigs
-        while (params.sigfigs > 0) {
-            if (params.decimalIndex > 0 && params.sigfigIndex == params.decimalIndex) {
-                buffer[params.sigfigIndex--] = '.';
-            }
-            buffer[params.sigfigIndex--] = bytes1(uint8(uint256(48) + (params.sigfigs % 10)));
-            params.sigfigs /= 10;
-        }
-        return string(buffer);
-    }
-
-    function sigfigsRounded(uint256 value, uint8 digits) private pure returns (uint256, bool) {
-        bool extraDigit;
-        if (digits > 5) {
-            value = value / ((10**(digits - 5)));
-        }
-        bool roundUp = value % 10 > 4;
-        value = value / 10;
-        if (roundUp) {
-            value = value + 1;
-        }
-        // 99999 -> 100000 gives an extra sigfig
-        if (value == 100000) {
-            value /= 10;
-            extraDigit = true;
-        }
-        return (value, extraDigit);
-    }
-
-    function abs(int256 x) private pure returns (uint256) {
-        return uint256(x >= 0 ? x : -x);
-    }
-
     function generateSVGImage(ConstructTokenURIParams memory params) internal pure returns (string memory svg) {
         NFTSVG.SVGParams memory svgParams =
             NFTSVG.SVGParams({
@@ -190,9 +126,8 @@ library NFTDescriptor {
         uint256 outMn,
         uint256 outMx
     ) private pure returns (string memory) {
-        // FIXME
         // return (n.sub(inMn).mul(outMx.sub(outMn)).div(inMx.sub(inMn)).add(outMn)).toString();
-        // return Strings.toString(((n - inMn) * (outMx - outMn) / (inMx * inMn) + outMn)); 
+        // return Strings.toString(((n - inMn) * (outMx - outMn) / (inMx * inMn) + outMn));
         return "1";
     }
 
