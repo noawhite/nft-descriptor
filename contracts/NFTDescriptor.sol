@@ -7,6 +7,7 @@ import "openzeppelin-solidity/contracts/utils/Strings.sol";
 import 'base64-sol/base64.sol';
 import './HexStrings.sol';
 import './NFTSVG.sol';
+import './SimpleNFTSVG.sol';
 
 library NFTDescriptor {
     using HexStrings for uint256;
@@ -21,11 +22,9 @@ library NFTDescriptor {
 
     function constructTokenURI(ConstructTokenURIParams memory params) public pure returns (string memory) {
         string memory name = generateName(params);
-        string memory description =
-            generateDescription(escapeQuotes(params.name));
-        // FIXME
-        string memory image = Base64.encode(bytes(generateSVGImage(params)));
-        // string memory image = "test.png";
+        string memory description = generateDescription(escapeQuotes(params.name));
+        // string memory image = Base64.encode(bytes(generateSVGImage(params)));
+        string memory image = Base64.encode(bytes(generateSimpleSVGImage(params)));
 
         return
             string(
@@ -96,6 +95,17 @@ library NFTDescriptor {
                     escapeQuotes(params.name)
                 )
             );
+    }
+
+    function generateSimpleSVGImage(ConstructTokenURIParams memory params) internal pure returns (string memory svg) {
+        SimpleNFTSVG.SVGParams memory svgParams =
+            SimpleNFTSVG.SVGParams({
+                symbol: params.symbol,
+                name: params.name,
+                tokenId: params.tokenId
+            });
+
+        return SimpleNFTSVG.generateSVG(svgParams);
     }
 
     function generateSVGImage(ConstructTokenURIParams memory params) internal pure returns (string memory svg) {
